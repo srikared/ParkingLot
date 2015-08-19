@@ -1,5 +1,9 @@
 package org.parking.main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,10 +18,13 @@ public class ParkingArea {
 	private Slot[] slots;
 	private int freeCarSlot;
 	private Set<String> setOfCarNos = new HashSet<String>();
+	private ParkingOwner parkingOwner ;
+	private File file = new File("C:\\Users\\SAI SRIKAR\\Desktop\\prakingPushNotification.txt");
 
-	public ParkingArea(int totalCapacity) {
+	public ParkingArea(int totalCapacity, ParkingOwner parkingOwner) {
 		this.totalCapacity = totalCapacity;
 		this.filledCapacity = 0;
+		this.parkingOwner = parkingOwner;
 		slots = new Slot[totalCapacity];
 		for (int currentIndex = 0; currentIndex < totalCapacity; currentIndex++) {
 			slots[currentIndex] = new Slot(currentIndex, true);
@@ -25,7 +32,7 @@ public class ParkingArea {
 		freeCarSlot = 0;
 	}
 
-	public ParkingToken parkCar(String carNo) throws ParkingLotIsFullException {
+	public ParkingToken parkCar(String carNo) throws ParkingLotIsFullException, FileNotFoundException, UnsupportedEncodingException {
 		if(!isPossibleToParkCar()) {
 			throw new ParkingLotIsFullException(); 
 		}
@@ -34,10 +41,19 @@ public class ParkingArea {
 			slots[freeCarSlot].setOccupied();
 			setNewFreeSlot();
 			setOfCarNos.add(carNo);
+			if(isParkingFull()) {
+				parkingOwner.notifyWhenParkingIsfull();
+			}
 			return new ParkingToken(slots[freeCarSlot], carNo);
 		}
 		
 		return null;
+	}
+
+	private boolean isParkingFull() throws FileNotFoundException, UnsupportedEncodingException {
+		if(setOfCarNos.size()== totalCapacity)
+			return true;
+		return false;
 	}
 
 	private void setNewFreeSlot() {
