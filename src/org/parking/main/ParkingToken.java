@@ -3,13 +3,13 @@ package org.parking.main;
 public class ParkingToken {
 	
 	private Slot slot;
-	private int carNo;
-	public ParkingToken(Slot slot, int carNo) {
+	private String carNo;
+	public ParkingToken(Slot slot, String carNo) {
 		this.slot = slot;
 		this.carNo = carNo;
 	}
 	
-	public int getCarNo(){
+	public String getCarNo(){
 		return carNo;
 	}
 	

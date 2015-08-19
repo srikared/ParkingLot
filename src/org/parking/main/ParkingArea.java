@@ -13,7 +13,7 @@ public class ParkingArea {
 	private int filledCapacity;
 	private Slot[] slots;
 	private int freeCarSlot;
-	private Set<Integer> setOfCarNos = new HashSet<Integer>();
+	private Set<String> setOfCarNos = new HashSet<String>();
 
 	public ParkingArea(int totalCapacity) {
 		this.totalCapacity = totalCapacity;
@@ -25,7 +25,10 @@ public class ParkingArea {
 		freeCarSlot = 0;
 	}
 
-	public ParkingToken parkCar(int carNo) {
+	public ParkingToken parkCar(String carNo) throws ParkingLotIsFullException {
+		if(!isPossibleToParkCar()) {
+			throw new ParkingLotIsFullException(); 
+		}
 		if (isPossibleToParkCar() && !setOfCarNos.contains(carNo)) {
 			filledCapacity++;
 			slots[freeCarSlot].setOccupied();
@@ -33,6 +36,7 @@ public class ParkingArea {
 			setOfCarNos.add(carNo);
 			return new ParkingToken(slots[freeCarSlot], carNo);
 		}
+		
 		return null;
 	}
 
@@ -49,13 +53,13 @@ public class ParkingArea {
 		return totalCapacity > filledCapacity;
 	}
 
-	public boolean unParkCar(ParkingToken token) throws CarNotPresentException {
+	public String unParkCar(ParkingToken token) throws CarNotPresentException {
 		if(!setOfCarNos.contains(token.getCarNo())) {
 			throw new CarNotPresentException();
 		}
 		token.getSlot().setFree();
 		setOfCarNos.remove(token.getCarNo());
-		return token.getSlot().isOccupied();
+		return token.getCarNo();
 		
 	}
 

@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.experimental.categories.Categories.ExcludeCategory;
 import org.parking.main.ParkingArea;
+import org.parking.main.ParkingLotIsFullException;
 import org.parking.main.ParkingToken;
 import org.parking.main.exception.CarNotPresentException;
 import org.parking.main.exception.TokenNullException;
@@ -14,44 +15,38 @@ public class ParkingLotTest {
 	ParkingArea parkingArea = new ParkingArea(1);
 
 	@Test
-	public void shouldAllowToParkACarIfFilledCapcityIsLessThanTotalCapacity(){
+	public void shouldAllowToParkACarIfFilledCapcityIsLessThanTotalCapacity() throws ParkingLotIsFullException{
 		ParkingArea parkingArea = new ParkingArea(1);
-		ParkingToken token = parkingArea.parkCar(22);
+		ParkingToken token = parkingArea.parkCar("21");
 		assertEquals(true, !token.equals(null));
 	}
 	
-	@Test
-	public void shouldNotAllowToParkACarIfFilledCapcityIsEqualTotalCapacity(){
+	@Test(expected = ParkingLotIsFullException.class)
+	public void shouldNotAllowToParkACarIfFilledCapcityIsEqualTotalCapacity() throws ParkingLotIsFullException{
 		ParkingArea parkingArea = new ParkingArea(0);
-		ParkingToken token = parkingArea.parkCar(21);
-		assertNull(token);
+		ParkingToken token = parkingArea.parkCar("21");
 	}
 	
 	@Test
-	public void testCarUnPark() throws  CarNotPresentException {
+	public void testCarUnPark() throws  CarNotPresentException, ParkingLotIsFullException {
 		ParkingArea parkingArea = new ParkingArea(1);
-		ParkingToken token = parkingArea.parkCar(21);
-		assertEquals(true,parkingArea.unParkCar(token));
+		ParkingToken token = parkingArea.parkCar("21");
+		assertEquals("21",parkingArea.unParkCar(token));
 	}
 	
-	@Test(expected = TokenNullException.class)
-	public void testCarUnParkOnTokenNull() throws  CarNotPresentException {
-		ParkingArea parkingArea = new ParkingArea(1);
-		parkingArea.unParkCar(null);
-	}
 	
 	@Test
-	public void testParkingSameCar() {
+	public void testParkingSameCar() throws ParkingLotIsFullException {
 		ParkingArea parkingArea = new ParkingArea(2);
-		ParkingToken token = parkingArea.parkCar(21);
-		ParkingToken tokenRes = parkingArea.parkCar(21);
+		ParkingToken token = parkingArea.parkCar("21");
+		ParkingToken tokenRes = parkingArea.parkCar("21");
 		assertNull(tokenRes);
 	}
 	
 	@Test(expected = CarNotPresentException.class)
-	public void testUnparkCarTwoTimes() throws CarNotPresentException {
+	public void testUnparkCarTwoTimes() throws CarNotPresentException, ParkingLotIsFullException {
 		ParkingArea parkingArea = new ParkingArea(2);
-		ParkingToken token = parkingArea.parkCar(21);
+		ParkingToken token = parkingArea.parkCar("21");
 		parkingArea.unParkCar(token);
 		parkingArea.unParkCar(token);
 		
