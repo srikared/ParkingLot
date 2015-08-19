@@ -77,7 +77,24 @@ public class ParkingLotTest {
 		ParkingToken token = parkingArea.parkCar("21");
 		ParkingToken tokenRes = parkingArea.parkCar("22");
 		verify(parkingOwner , times(1)).notifyWhenParkingIsfull();
+	}
+	
+	@Test
+	public void testIfParkingFullNotificationIsNotSentMultipleTimes() throws IOException
+			 {
+		ParkingOwner parkingOwner = mock(ParkingOwner.class);
+		ParkingArea parkingArea = new ParkingArea(2, parkingOwner);
+		try {
+			ParkingToken token = parkingArea.parkCar("21");
 
+			ParkingToken tokenRes = parkingArea.parkCar("22");
+			ParkingToken tokenResX = parkingArea.parkCar("23");
+		} catch (ParkingLotIsFullException e) {
+			
+		}
+		finally {
+			verify(parkingOwner , times(1)).notifyWhenParkingIsfull();
+		}
 	}
 
 }

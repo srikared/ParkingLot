@@ -41,7 +41,7 @@ public class ParkingArea {
 			slots[freeCarSlot].setOccupied();
 			setNewFreeSlot();
 			setOfCarNos.add(carNo);
-			if(isParkingFull()) {
+			if(isParkingFull() && parkingOwner.getIsFull()==false) {
 				parkingOwner.notifyWhenParkingIsfull();
 			}
 			return new ParkingToken(slots[freeCarSlot], carNo);
