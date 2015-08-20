@@ -1,4 +1,4 @@
-package org.parking.main;
+package org.parking.main.exception;
 
 public class ParkingLotIsFullException extends Exception {
 

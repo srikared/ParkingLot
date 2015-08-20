@@ -4,9 +4,12 @@ public class ParkingToken {
 	
 	private Slot slot;
 	private String carNo;
-	public ParkingToken(Slot slot, String carNo) {
+	private ParkingArea parkingArea;
+	
+	public ParkingToken(Slot slot, String carNo, ParkingArea parkingArea) {
 		this.slot = slot;
 		this.carNo = carNo;
+		this.parkingArea = parkingArea;
 	}
 	
 	public String getCarNo(){
@@ -16,4 +19,7 @@ public class ParkingToken {
 	public Slot getSlot(){
 		return slot;
 	}
+	
+	
+	
 }

@@ -1,11 +1,8 @@
 package org.parking.main;
 
-public class ParkingOwner extends Notifier {
-
+public class FBIAgent extends Notifier{
 	
 	@Override
 	public void notifyAgent() {
 	}
-
-	
 }
